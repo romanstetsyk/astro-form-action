@@ -1,16 +1,39 @@
 ---
+import { actions, isActionError, isInputError } from "astro:actions";
 
+const result = Astro.getActionResult(actions.signUp);
+console.log("signup result", result);
+if (result) {
+  const { error } = result;
+  if (error) {
+    if (isInputError(error)) {
+      console.log("isInputError");
+    } else if (isActionError(error)) {
+      console.log("isActionError");
+    }
+  }
+}
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <h1>Astro</h1>
+
+    <form method="POST" action={actions.signUp}>
+      <label>Name: <input type="text" name="name" /></label><br />
+      <label>Email: <input type="email" name="email" /></label><br />
+      <label>Password: <input type="password" name="password" /></label><br />
+      <label
+        >Repeat password: <input type="password" name="repeatPassword" /></label
+      ><br />
+      <button type="submit">sign up</button>
+    </form>
+  </body>
 </html>
